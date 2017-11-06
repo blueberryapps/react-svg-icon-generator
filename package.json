@@ -1,6 +1,6 @@
 {
   "name": "react-svg-icon-generator",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Generate React Icon Component from SVG icons to show, resize and recolor them.",
   "main": "lib/index.js",
   "bin": {
