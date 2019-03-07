@@ -1,11 +1,13 @@
 version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:carbon
+
 jobs:
   build:
-    docker:
-      - image: circleci/node:carbon
-
-    working_directory: ~/repo
-
+    <<: *defaults
     steps:
       - checkout
 
@@ -29,17 +31,19 @@ jobs:
           name: Test
           command: |
             npm test
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
   
   publish:
-    docker:
-      - image: circleci/node:carbon
-
+    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/repo
       - run:
           name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - run:
           name: Publish package
           command: npm publish
