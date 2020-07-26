@@ -1,0 +1,42 @@
+/* eslint-disable */
+// {{comment}}
+{% if reactPureRender %}
+import React, {PureComponent as Component, DOMAttributes, SVGAttributes, HTMLAttributes} from 'react';
+{%- else %}
+import React, {Component, DOMAttributes, SVGAttributes, HTMLAttributes} from 'react';
+{%- endif %}
+
+const iconNames = [
+  {%- for icon in icons %}
+  '{{icon.name}}',
+  {%- endfor %}
+] as const;
+
+export type IconName = typeof iconNames[number];
+
+interface PropTypes {
+  className?: string;
+  color?: string;
+  height?: number;
+  width?: number;
+  name: IconName;
+  onClick?: DOMAttributes<SVGSVGElement>["onClick"];
+  size?: number;
+  style?: SVGAttributes<SVGSVGElement>["style"];
+  wrapperStyle?:HTMLAttributes<HTMLDivElement>["style"]
+};
+
+const getIcon = (props: PropTypes) => {
+  const {height, color, onClick, name, size, style, width, className, ...rest} = props;
+  {% for icon in icons -%}
+  if(name === '{{icon.name}}') {
+    return ({{icon.svg | safe}});
+  }
+  {% endfor -%}
+  return <div>🤷🏽‍♂️ no icon name given</div>
+}
+
+export default(props: PropTypes) => {
+  const {wrapperStyle} = props;
+  return wrapperStyle ? <div style={wrapperStyle}>{getIcon(props)}</div> : getIcon(props)
+}
