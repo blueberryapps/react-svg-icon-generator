@@ -48,7 +48,7 @@
   "dependencies": {
     "bluebird": "^3.3.4",
     "invariant": "^2.0.0",
-    "nunjucks": "^2.4.0",
+    "nunjucks": "^3.2.4",
     "svgo": "^0.6.2",
     "yargs": "^6.6.0"
   }
